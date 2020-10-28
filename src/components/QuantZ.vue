@@ -62,11 +62,11 @@ export default {
         },
       },
       navigator: {
-        enabled: false,
+        enabled: true,
       },
       stockTools: {
         gui: {
-          enabled: false,
+          enabled: true,
         },
       },
       credits: {
@@ -100,7 +100,7 @@ export default {
         },
       },
       navigator: {
-        enabled: false,
+        enabled: true,
       },
       stockTools: {
         gui: {
@@ -124,7 +124,7 @@ export default {
   }),
   methods: {
     get_us_wei() {
-      axios.get('us_wei_item')
+      axios.get('us_wei_item?max_results=600&sort=when&where={"when":%20{"$gte":1262275200000}}')
         .then((data) => {
           // console.log(data.data.items);
           const df = new dataForge.DataFrame(data.data.items);
@@ -144,14 +144,14 @@ export default {
           };
           this.joblessChartOptions = chartOptions;
           */
-          console.log(this.joblessChartOptions.series[0]);
+          console.log(weiSeriesData.data);
         })
         .catch((error) => {
           console.log(error);
         });
     },
     get_us_initial_jobless_claim() {
-      axios.get('/us_jobless_initial_claim_item')
+      axios.get('/us_jobless_initial_claim_item?max_results=600&sort=when&where={"when":%20{"$gte":1262275200000}}')
         .then((data) => {
           console.log(data.data.items);
           const df = new dataForge.DataFrame(data.data.items);
@@ -161,6 +161,7 @@ export default {
           for (i; i < ijcs.length; i += 1) {
             initialJoblessClaimSeriesData.data.push([ijcs[i].when, ijcs[i].initial_jobless]);
           }
+          console.log(initialJoblessClaimSeriesData.data);
         })
         .catch((err) => {
           console.log(err);
