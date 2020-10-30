@@ -1,5 +1,6 @@
 <template>
-  <v-container>
+  <!-- 强制宽度占满屏幕 -->
+  <v-container style="maxWidth: 100%;">
     <div>
       <highcharts :constructorType="'stockChart'" class="hc"
        :options="joblessChartOptions" ref="jobless">
@@ -28,8 +29,8 @@ const weiSeriesData = {
   name: 'WEI',
   data: [],
   marker: {
-    enabled: true,
-    radius: 3,
+    enabled: false,
+    radius: 2,
   },
 };
 
@@ -37,8 +38,8 @@ const initialJoblessClaimSeriesData = {
   name: 'US Initial Jobless Claim',
   data: [],
   marker: {
-    enabled: true,
-    radius: 3,
+    enabled: false,
+    radius: 2,
   },
 };
 
@@ -48,6 +49,11 @@ export default {
     joblessChartOptions: {
       chart: {
         type: 'spline',
+      },
+      plotOptions: {
+        spline: {
+          lineWidth: 1,
+        },
       },
       series: [
         initialJoblessClaimSeriesData,
@@ -66,7 +72,7 @@ export default {
       },
       stockTools: {
         gui: {
-          enabled: true,
+          enabled: false,
         },
       },
       credits: {
