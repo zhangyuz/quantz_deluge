@@ -8,11 +8,14 @@
       <highcharts :constructorType="'stockChart'" class="hc"
        :options="weiChartOptions" ref="wei">
       </highcharts>
+      <p> Redbook retail data, to be continued </p>
     </div>
   </v-container>
 </template>
 
 <script>
+
+/* eslint no-underscore-dangle: ["error", { "allow": ["_items","_created", "_updated", "_id"] }] */
 
 const axios = require('axios');
 const dataForge = require('data-forge');
@@ -47,6 +50,9 @@ export default {
   name: 'QuantZ',
   data: () => ({
     joblessChartOptions: {
+      title: {
+        text: 'Us Initial Jobless Claim',
+      },
       chart: {
         type: 'spline',
       },
@@ -90,6 +96,9 @@ export default {
       },
     },
     weiChartOptions: {
+      title: {
+        text: 'Us WEI',
+      },
       chart: {
         type: 'spline',
       },
@@ -130,10 +139,10 @@ export default {
   }),
   methods: {
     get_us_wei() {
-      axios.get('us_wei_item?max_results=600&sort=when&where={"when":%20{"$gte":1262275200000}}')
+      axios.get('/us_wei_item?max_results=600&sort=when&where={"when":%20{"$gte":1262275200000}}')
         .then((data) => {
-          // console.log(data.data.items);
-          const df = new dataForge.DataFrame(data.data.items);
+          console.log(data.data._items);
+          const df = new dataForge.DataFrame(data.data._items);
           // console.log(df.getSeries('when').toArray());
           // console.log(df.getSeries('WEI').toArray());
           const weis = df.toArray();
@@ -153,14 +162,16 @@ export default {
           console.log(weiSeriesData.data);
         })
         .catch((error) => {
+          console.log('failed to get wei');
           console.log(error);
         });
     },
     get_us_initial_jobless_claim() {
       axios.get('/us_jobless_initial_claim_item?max_results=600&sort=when&where={"when":%20{"$gte":1262275200000}}')
         .then((data) => {
-          console.log(data.data.items);
-          const df = new dataForge.DataFrame(data.data.items);
+          console.log('get jobless');
+          console.log(data.data._items);
+          const df = new dataForge.DataFrame(data.data._items);
           const ijcs = df.toArray();
           console.log(ijcs[0]);
           let i = 0;
@@ -170,6 +181,7 @@ export default {
           console.log(initialJoblessClaimSeriesData.data);
         })
         .catch((err) => {
+          console.log('Failed to get jobless');
           console.log(err);
         });
     },
